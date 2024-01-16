@@ -11,7 +11,10 @@
     "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/logo.svg"
   },
   "dependencies": {
-    "vue": "^3.3.11"
+    "firebase": "^10.7.1",
+    "vue": "^3.3.11",
+    "vue-router": "^4.0.13",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vite-pwa/assets-generator": "^0.2.3",
