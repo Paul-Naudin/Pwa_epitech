@@ -3,8 +3,14 @@ import App from './App.vue'
 import router from './router'
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from "firebase/analytics";
+import vuetify from './plugins/vuetify';
 
-createApp(App).use(router).mount('#app')
+const vueApp = createApp(App)
+
+vueApp.use(router)
+vueApp.use(vuetify)
+
+vueApp.mount('#app')
 
 const firebaseConfig = {
     apiKey: "AIzaSyAAfZu2LJ72tvUP4IjGXO1NtvMdPiL9C6w",
