@@ -1,23 +1,35 @@
 export default {
+    namespaced: true,
     state: {
-        user: null,
+        uid: null,
+        email: null,
+        username: null,
     },
     getters: {
-        user(state) {
-            return state.user;
+        uid(state) {
+            return state.uid;
+        },
+        email(state) {
+            return state.email;
+        },
+        username(state) {
+            return state.username;
         },
     },
     mutations: {
-        setUser(state, user) {
-            state.user = user;
-        },
+        setUid(state, uid) { state.uid = uid; },
+        setEmail(state, email) { state.email = email; },
+        setUsername(state, username) { state.username = username; },
     },
     actions: {
-        setUser(context, user) {
-            context.commit('setUser', user);
+        registerUser(context, payload) {
+            context.commit('setUid', payload.uid);
+            context.commit('setEmail', payload.email);
         },
-        deleteUser(context) {
-            context.commit('setUser', null);
-        }
+        clearUser(context) {
+            context.commit('setUid', null);
+            context.commit('setEmail', null);
+            context.commit('setUsername', null);
+        },
     },
 }

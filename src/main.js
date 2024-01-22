@@ -4,11 +4,13 @@ import router from './router'
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from "firebase/analytics";
 import vuetify from './plugins/vuetify';
+import store from './store';
 
 const vueApp = createApp(App)
 
 vueApp.use(router)
 vueApp.use(vuetify)
+vueApp.use(store)
 
 vueApp.mount('#app')
 
