@@ -36,12 +36,11 @@ export default {
         const userCredential = await createUserWithEmailAndPassword(auth, this.email, this.password);
         const user = userCredential.user;
 
-        this.$store.dispatch('user/registerUser', { uid: user.uid, email: user.email, username: null });
-
-        this.$store.dispatch('snackbar/showSnackbar', { message: 'Successfully registered', color: 'success' })
+        await this.$store.dispatch('user/registerUser', { uid: user.uid, email: user.email });
+        await this.$store.dispatch('snackbar/showSnackbar', { message: 'Successfully registered', color: 'success' })
+        this.$router.push('/');
 
       } catch (error) {
-        console.log(error);
         if (error.code === 'auth/invalid-email')
           this.error = 'The email address is not valid.';
         else if (error.code === 'auth/email-already-in-use')
@@ -59,8 +58,11 @@ export default {
         const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
         const user = userCredential.user;
 
+        await this.$store.dispatch('user/loginUser', { uid: user.uid });
+        await this.$store.dispatch('snackbar/showSnackbar', { message: 'Successfully Logged-in', color: 'success' })
+        this.$router.push('/');
+
       } catch (error) {
-        console.log(error);
         if (error.code === 'auth/invalid-email')
           this.error = 'The email address is not valid.';
         else if (error.code === 'auth/user-disabled')
