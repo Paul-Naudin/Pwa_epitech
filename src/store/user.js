@@ -32,10 +32,12 @@ export default {
             await setDoc(userRef, {
                 email: payload.email,
                 uid: payload.uid,
+                username: payload.username,
             });
 
             context.commit('setUid', payload.uid);
             context.commit('setEmail', payload.email);
+            context.commit('setUsername', payload.username);
             context.dispatch('storeUser');
         },
         async loginUser(context, payload) {
