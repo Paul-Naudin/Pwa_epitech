@@ -1,7 +1,7 @@
 <template>
-    <LeftDrawer />
+    <TopAppBar :drawer="drawer" @drawer-toggle="updateDrawer" />
     <v-main>
-        <TopAppBar />
+        <LeftDrawer :drawer="drawer" @drawer-toggle="updateDrawer"/>
         <h1>MainView</h1>
     </v-main>
 </template>
@@ -15,6 +15,16 @@ export default {
     components: {
         LeftDrawer,
         TopAppBar,
-    }
+    },
+    data() {
+        return {
+            drawer: false,
+        }
+    },
+    methods: {
+        updateDrawer(value) {
+            this.drawer = value;
+        },
+    },
 }
 </script>
