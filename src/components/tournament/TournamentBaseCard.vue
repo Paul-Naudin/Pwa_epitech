@@ -11,6 +11,9 @@
       Status:
       <v-chip color="primary">{{ selectedTournamentStatus }}</v-chip>
     </v-card-text>
+    <v-card-text v-if="selectedTournamentStatus === 'open' && !selectedTournamentPlayers.find(v => v && v.uid === uid)" class="text-center">
+      <v-btn class="ma-2" color="primary" @click="joinTournament">Join</v-btn>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -22,8 +25,21 @@ export default {
   computed: {
     ...mapGetters('tournaments', [
       'selectedTournament',
-      'selectedTournamentStatus'
+      'selectedTournamentStatus',
+      'selectedTournamentPlayers'
     ]),
+    ...mapGetters('user', {
+      uid: 'uid',
+    }),
+  },
+  methods: {
+    async joinTournament() {
+      await this.$store.dispatch('tournaments/addPlayerToTournament', this.uid);
+      await this.$store.dispatch('snackbar/showSnackbar', {
+        message: 'Joined tournament',
+        color: 'success',
+      });
+    },
   },
 };
 </script>

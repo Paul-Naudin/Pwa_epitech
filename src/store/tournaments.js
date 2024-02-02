@@ -1,5 +1,5 @@
 import { db, realtimeDb } from "../firebase";
-import { ref, get, set } from "firebase/database";
+import { ref, get, set, child } from "firebase/database";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { get as getidb, set as setidb } from 'idb-keyval';
 
@@ -8,6 +8,7 @@ export default {
     state: {
         tournaments: null,
         selectedTournament: null,
+        invite: null,
     },
     getters: {
         tournaments(state) {
@@ -27,7 +28,10 @@ export default {
                 return [];
             }
             return state.selectedTournament.players;
-        }
+        },
+        invite(state) {
+            return state.invite;
+        },
     },
     mutations: {
         setTournaments(state, tournaments) { state.tournaments = tournaments; },
@@ -36,6 +40,9 @@ export default {
                 return;
             }
             state.selectedTournament = state.tournaments.find(tournament => tournament.id === id);
+        },
+        setInvite(state, invite) {
+            state.invite = invite;
         },
     },
     actions: {
@@ -53,15 +60,16 @@ export default {
             const player = playerSnapshot.data();
 
             // Add the player to the tournament
+            if (tournament.players.some(player => player.uid === playerUid)) {
+                return;
+            }
             tournament.players.push({ uid: playerUid, score: 0, username: player.username });
 
             // Update the player's tournaments
             if (!player.tournaments) {
                 player.tournaments = [state.getters.selectedTournament.id];
-                console.log('Player didn\'t have any tournaments')
             } else if (!player.tournaments.includes(state.getters.selectedTournament.id)) {
                 player.tournaments.push(state.getters.selectedTournament.id);
-                console.log('Player didn\'t have this tournament');
             }
             await setDoc(playerDoc, player);
 
@@ -76,17 +84,16 @@ export default {
             state.commit('setSelectedTournament', id);
             await setidb('selectedTournament', id);
         },
-        async fetchTournaments(state, ids) {
-            if (!ids) {
-                return;
+        async fetchTournaments(state) {
+            const dbRef = ref(realtimeDb);
+            const tournamentsRef = child(dbRef, 'tournaments');
+            const snapshot = await get(tournamentsRef);
+
+            if (snapshot.exists()) {
+                const tournaments = snapshot.val();
+                const tournamentsArray = Object.keys(tournaments).map(id => ({ ...tournaments[id], id }));
+                state.commit('setTournaments', tournamentsArray);
             }
-            const tournaments = [];
-            for (const id of ids) {
-                const tournamentRef = ref(realtimeDb, `tournaments/${id}`);
-                const snapshot = await get(tournamentRef);
-                tournaments.push(snapshot.val());
-            }
-            state.commit('setTournaments', tournaments);
         },
         async loadSelectedTournament(state) {
             const snapshot = await getidb('selectedTournament');
@@ -94,6 +101,23 @@ export default {
                 state.commit('setSelectedTournament', snapshot);
                 return;
             }
+        },
+        async setInvite(state, invite) {
+            await state.dispatch('fetchTournaments');
+            state.getters.tournaments.forEach(tournament => {
+                if (tournament.id === invite.tournamentId) {
+                    state.commit('setInvite', {
+                        username: invite.host,
+                        tournamentName: tournament.name,
+                        tournamentDescription: tournament.description,
+                        tournamentId: invite.tournamentId,
+                    });
+                    state.commit('setSelectedTournament', invite.tournamentId);
+                }
+            });
+        },
+        removeInvite(state) {
+            state.commit('setInvite', null);
         },
     },
 }

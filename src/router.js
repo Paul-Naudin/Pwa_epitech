@@ -33,6 +33,18 @@ router.beforeEach(async (to, from, next) => {
   await store.dispatch('user/loadUser');
   const userIsLoggedIn = store.getters['user/uid'];
 
+  if (to.path === '/invite') {
+    console.log('invite');
+    const tournamentId = to.query.tournamentId;
+    const host = to.query.host;
+    if (tournamentId && host) {
+      store.dispatch('tournaments/setInvite', { tournamentId, host });
+    }
+    if (userIsLoggedIn) {
+      next('/');
+    }
+  }
+
   if (!userIsLoggedIn && to.path !== '/authentication') {
     next('/authentication');
   } else if (userIsLoggedIn && to.path === '/authentication') {

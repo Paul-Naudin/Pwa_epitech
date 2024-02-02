@@ -118,8 +118,6 @@ export default {
         this.dialog = false;
       }
 
-      console.log('ids', this.tournamentIds);
-
       // sync tournaments
       await this.$store.dispatch('tournaments/fetchTournaments', this.tournamentIds);
 

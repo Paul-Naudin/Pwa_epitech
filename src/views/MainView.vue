@@ -43,7 +43,7 @@ export default {
     },
     async mounted() {
         await this.$store.dispatch('user/fetchUser');
-        await this.$store.dispatch('tournaments/fetchTournaments', this.tournamentIds);
+        await this.$store.dispatch('tournaments/fetchTournaments');
         await this.$store.dispatch('tournaments/loadSelectedTournament');
 
     },

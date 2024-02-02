@@ -8,7 +8,7 @@
       <v-list>
         <v-list-item v-for="(player, index) in selectedTournamentPlayers" :key="index">{{ player.username }}</v-list-item>
       </v-list>
-      <v-btn v-if="!selectedTournamentPlayers.find(v => v.uid === uid)" class="ma-2" color="secondary" @click="joinTournament">Join as a player</v-btn>
+      <v-btn v-if="!selectedTournamentPlayers.find(v => v && v.uid === uid)" class="ma-2" color="secondary" @click="joinTournament">Join as a player</v-btn>
       <v-btn class="ma-2" color="primary" @click="invite">Invite</v-btn>
     </v-card-text>
     <v-card-actions class="justify-center">
@@ -32,6 +32,7 @@ export default {
     ]),
     ...mapGetters('user', {
       uid: 'uid',
+      username: 'username',
     }),
   },
   methods: {
@@ -48,11 +49,21 @@ export default {
       console.log('delete tournament');
     },
     invite() {
-      // TODO: invite players
-      console.log('invite players');
+      // Copy the invite url to the clipboard
+      console.log('invite players:', window.location.href + "invite?tournamentId=" + this.selectedTournament.id + "&host=" + this.username);
+
+      navigator.clipboard.writeText(window.location.href + "invite?tournamentId=" + this.selectedTournament.id + "&host=" + this.username);
+      this.$store.dispatch('snackbar/showSnackbar', {
+        message: 'Copied to clipboard',
+        color: 'success',
+      });
     },
     async joinTournament() {
       await this.$store.dispatch('tournaments/addPlayerToTournament', this.uid);
+      await this.$store.dispatch('snackbar/showSnackbar', {
+        message: 'Joined tournament',
+        color: 'success',
+      });
     },
   },
 };

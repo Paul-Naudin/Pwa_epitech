@@ -55,8 +55,6 @@ export default {
                 username: context.state.username,
                 tournaments: context.state.tournaments,
             });
-            console.log('User updated');
-            console.log(userRef);
         },
         async loginUser(context, payload) {
             const userRef = doc(db, "users", payload.uid);
@@ -77,7 +75,6 @@ export default {
             await signOut(auth);
         },
         async addTournament(context, id) {
-            console.log('Adding tournament', id);
             context.commit('setTournaments', context.state.tournaments ? [...context.state.tournaments, id] : [id]);
             await context.dispatch('updateUser');
         },
