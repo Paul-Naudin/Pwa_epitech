@@ -3,7 +3,7 @@
     <v-btn icon @click="toggleDrawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-    <v-img src="public/logo.svg" max-height="35" max-width="35" contain></v-img>
+    <v-img src="logo.svg" max-height="35" max-width="35" contain></v-img>
     <v-toolbar-title >Bracket</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn color="primary" @click="logout">Logout</v-btn>

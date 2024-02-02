@@ -1,17 +1,17 @@
 
 <template>
   <v-app>
-    <LoginSnackbar />
+    <Snackbar />
     <router-view />
   </v-app>
 </template>
 
 <script>
-import LoginSnackbar from "./components/ui/LoginSnackbar.vue";
+import Snackbar from "./components/ui/Snackbar.vue";
 
 export default {
   components: {
-    LoginSnackbar,
+    Snackbar,
   },
 };
 </script>

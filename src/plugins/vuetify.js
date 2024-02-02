@@ -26,5 +26,8 @@ const myCustomLightTheme = {
         myCustomLightTheme,
       },
     },
+    typography: {
+      fontFamily: 'Roboto',
+    },
   })
   
