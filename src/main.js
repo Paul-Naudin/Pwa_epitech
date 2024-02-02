@@ -18,3 +18,17 @@ vueApp.mount('#app')
 store.dispatch('user/loadUser');
 
 const analytics = getAnalytics(app)
+
+Notification.requestPermission().then(function (permission) {
+    if (permission === 'granted') {
+        console.log('Notification permission granted.');
+    } else {
+        console.log('Unable to get permission to notify.');
+    }
+});
+
+navigator.serviceWorker.ready.then(function (registration) {
+    registration.pushManager.subscribe({ userVisibleOnly: true }).then(function (subscription) {
+        console.log('Subscribed for push notifications.', subscription);
+    });
+});

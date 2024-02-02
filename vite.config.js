@@ -10,10 +10,29 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      strategies: 'injectManifest',
+      injectManifest: {
+        swSrc: './public/sw.js',
+      },
       manifest: {
         name: 'Bracket - Online Tournament Manager',
         short_name: 'Bracket',
         theme_color: '#ffffff',
+        background_color: '#ffffff',
+        display: 'standalone',
+        start_url: '/',
+        scope: '/',
+        description: 'Bracket is an online tournament manager that allows you to create and manage tournaments for your favorite games.',
+        categories: [], // Add categories field with an empty array
+        dir: "auto", // Add default direction of text field
+        iarc_rating_id: "", // Add iarc_rating_id field with an empty string
+        prefer_related_applications: false, // Add prefer_related_applications field with a boolean value
+        related_applications: [], // Add related_applications field with an empty array
+        scope_extensions: [], // Add scope_extensions field with an empty array
+        shortcuts: [], // Add shortcuts field with an empty array
+        screenshots: [], // Add screenshots field with an empty array
+        orientation: "any", // Add orientation field with a string value
+
         icons: [
           {
             "src": "pwa-64x64.png",
@@ -35,9 +54,15 @@ export default defineConfig({
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
+          },
+          {
+            "src": "maskable-icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
           }
         ],
-      },
+      }
     }),
     Vuetify({
       autoImport: true,
