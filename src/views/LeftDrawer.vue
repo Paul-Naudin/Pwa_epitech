@@ -72,6 +72,7 @@ export default {
     ]),
     ...mapGetters('user', {
       tournamentIds: 'tournaments',
+      uid: 'uid',
     }),
   },
   watch: {
@@ -97,6 +98,7 @@ export default {
         name: this.newTournament.name,
         description: this.newTournament.description,
         status: 'open',
+        admin: this.uid,
       };
 
       // push tournament to realtime database

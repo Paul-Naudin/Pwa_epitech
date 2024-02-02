@@ -1,23 +1,27 @@
 <template>
-  <v-card class="ma-2">
-    <v-card-title>
-          <h2 class="text-h3 text-center">{{ selectedTournament.name }}</h2>
-    </v-card-title>
-    <v-card-text>
-      <p class="text-center">{{ selectedTournament.description }}</p>
-    </v-card-text>
-  </v-card>
+  <TournamentBaseCard />
+  <TournamentAdminCard />
 </template>
 
 <script>
+import TournamentBaseCard from '../components/tournament/TournamentBaseCard.vue';
+import TournamentAdminCard from '../components/tournament/TournamentAdminCard.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'Tournament',
+  components: {
+    TournamentBaseCard,
+    TournamentAdminCard,
+  },
   computed: {
     ...mapGetters('tournaments', [
       'selectedTournament',
     ]),
+    ...mapGetters('user', {
+      tournamentIds: 'tournaments',
+      uid: 'uid',
+    }),
   },
 };
 </script>
