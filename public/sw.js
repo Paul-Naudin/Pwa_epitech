@@ -13,9 +13,6 @@ clientsClaim();
 // Pré-mise en cache des actifs spécifiques
 precacheAndRoute([
   // Ajoutez les chemins des fichiers que vous voulez mettre en cache ici
-  '/index.html',
-  '/src/App.vue',
-  '/src/main.js',
   // etc.
 ]);
 
@@ -56,12 +53,6 @@ self.addEventListener('push', function(event) {
     body: event.data.text()
   };
   event.waitUntil(self.registration.showNotification(title, options));
-});
-
-// Gestion de l'événement de changement de contrôleur
-navigator.serviceWorker.addEventListener('controllerchange', () => {
-  // Le service worker a changé, rechargez les données
-  window.location.reload();
 });
 
 // Vous pouvez ajouter d'autres fonctionnalités nécessaires pour respecter les consignes

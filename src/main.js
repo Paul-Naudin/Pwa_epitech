@@ -19,6 +19,19 @@ store.dispatch('user/loadUser');
 
 const analytics = getAnalytics(app)
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      console.log('Service Worker registered with scope:', registration.scope);
+    }).catch(function(error) {
+      console.log('Service Worker registration failed:', error);
+    });
+  
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      // The service worker has changed, reload the data
+      window.location.reload();
+    });
+  }
+
 Notification.requestPermission().then(function (permission) {
     if (permission === 'granted') {
         console.log('Notification permission granted.');
@@ -27,8 +40,8 @@ Notification.requestPermission().then(function (permission) {
     }
 });
 
-navigator.serviceWorker.ready.then(function (registration) {
-    registration.pushManager.subscribe({ userVisibleOnly: true }).then(function (subscription) {
-        console.log('Subscribed for push notifications.', subscription);
-    });
-});
+// navigator.serviceWorker.ready.then(function (registration) {
+//     registration.pushManager.subscribe({ userVisibleOnly: true }).then(function (subscription) {
+//         console.log('Subscribed for push notifications.', subscription);
+//     });
+// });

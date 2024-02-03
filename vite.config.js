@@ -21,7 +21,6 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',
-        scope: '/',
         description: 'Bracket is an online tournament manager that allows you to create and manage tournaments for your favorite games.',
         categories: [], // Add categories field with an empty array
         dir: "auto", // Add default direction of text field
